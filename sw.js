@@ -1,6 +1,6 @@
 // Service worker Kantong: membuat aplikasi bisa dibuka cepat dan tetap tampil saat offline.
 // Naikkan angka versi setiap kali Anda mengubah file aplikasi.
-const VER = 'kantong-v4';
+const VER = 'kantong-v5';
 const SHELL = ['./', 'index.html', 'privacy.html', 'manifest.webmanifest',
   'icon-192.png', 'icon-512.png', 'maskable-192.png', 'maskable-512.png',
   'apple-touch-icon.png', 'favicon-32.png', 'logo.svg'];
