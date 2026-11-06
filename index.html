@@ -76,10 +76,8 @@ nav button span{display:block;font-size:19px}nav .on{color:var(--pr)}
 <main id="app"></main>
 <button class="fab" onclick="openForm()" aria-label="Tambah pengeluaran">+</button>
 <nav id="nv"></nav>
-<div id="au"><div class="aub"><img src="icons/icon-192.png" width="72" height="72" alt="Kantong" style="border-radius:18px;display:block"><div id="aui"></div></div></div>
 <div id="lk"><div class="lkb"><img src="icons/icon-192.png" width="72" height="72" alt="Kantong" style="border-radius:18px;display:block;margin:0 auto 8px"><h2 id="lkt">Memuat…</h2><div id="lkm" class="mu"></div><div id="lkd"></div><div id="lkp"></div></div></div>
 <div id="sh" onclick="if(event.target===this)closeForm()"><div id="fm"></div></div>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 <script>
@@ -87,7 +85,7 @@ var K='kantong-v1',S,tab='beranda',rp='bulan',A=iso(new Date()),ed=null,rs=0;
 function def(){return{tx:[],cats:[['Makan','🍜'],['Transportasi','🛵'],['Belanja','🛍️'],['Tagihan','💡'],['Kesehatan','💊'],['Hiburan','🎬'],['Pendidikan','📚'],['Lainnya','📦']].map(function(c){return{n:c[0],i:c[1]}}),bt:0,bc:{}}}
 try{S=JSON.parse(localStorage.getItem(K))||def()}catch(e){S=def()}
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
-var DB=null,UID=null,BASE='',ST='Menghubungkan…',mig=0,tmo;
+var DB=null,UID=null,BASE='',ST='',mig=0,tmo;
 function pushSet(){cloudSave()}
 function pushTx(t){cloudSave()}
 function dropTx(id){cloudSave()}
@@ -133,10 +131,10 @@ if(rp==='hari')return h+list(S.tx.filter(function(t){return t.d===A}));
 return h+'<h2>Per kategori</h2>'+(brk(l)||'<div class="box mu">Belum ada data periode ini.</div>')}
 function anggaran(){var ym=iso(new Date()).slice(0,7),m=inP(ym),tm=sum(m),bc=byCat(m),u={};bc.forEach(function(x){u[x[0]]=x[1]});
 return '<h2 style="margin-top:0">Anggaran bulan ini</h2><div class="box"><label>Batas total (Rp)</label><input type="number" inputmode="numeric" value="'+(S.bt||'')+'" placeholder="0" onchange="S.bt=+this.value||0;saveS();draw()">'+(S.bt?'<div class="row sp mu"><span>Terpakai '+rp_(tm)+'</span><span>'+Math.round(tm/S.bt*100)+'%</span></div>'+prog(tm,S.bt):'')+'</div><h2>Per kategori</h2>'+S.cats.map(function(c){var lim=S.bc[c.n]||0,us=u[c.n]||0;return '<div class="box"><div class="row sp"><span>'+c.i+' '+esc(c.n)+'</span><span class="mu">'+rp_(us)+'</span></div><input type="number" inputmode="numeric" style="margin:8px 0" value="'+(lim||'')+'" placeholder="Batas (Rp)" onchange="S.bc['+JSON.stringify(c.n).replace(/"/g,'&quot;')+']=+this.value||0;saveS();draw()">'+(lim?prog(us,lim):'')+'</div>'}).join('')}
-function setelan(){return akun()+'<h2>Saldo awal</h2><div class="box"><label>Saldo awal (Rp)</label><input type="number" inputmode="numeric" value="'+(S.sa||'')+'" placeholder="0" onchange="S.sa=+this.value||0;saveS();draw()"><div class="mu">Saldo sebelum transaksi pertama yang tercatat. Dipakai untuk menghitung saldo dan rekening koran.</div></div><h2>Kategori</h2><div class="box">'+S.cats.map(function(c,i){return '<div class="row sp tx" style="cursor:default"><span>'+c.i+' '+esc(c.n)+'</span><button class="btn d" style="width:auto;padding:4px 8px" onclick="delCat('+i+')">Hapus</button></div>'}).join('')+'<div class="row" style="margin-top:12px"><input id="ci" style="width:64px;margin:0" placeholder="🙂" maxlength="4"><input id="cn" style="margin:0" placeholder="Nama kategori"><button class="btn" style="width:auto" onclick="addCat()">Tambah</button></div></div><h2>Cadangan data</h2><div class="box"><div class="mu" style="margin-bottom:8px">Salin teks ini untuk menyimpan data. Tempel teks cadangan lalu tekan Pulihkan untuk memuat ulang. Perhatian: ini menimpa seluruh data akun Anda.</div><textarea id="bk" rows="5">'+esc(JSON.stringify(S))+'</textarea><button class="btn g" onclick="restore()">Pulihkan dari teks</button></div><h2>Tampilan</h2><div class="box"><button class="btn g" onclick="theme()">Ganti tema terang/gelap</button></div><div class="box"><button class="btn d" onclick="wipe(this)">Hapus semua data</button></div>'}
+function setelan(){return akun()+'<h2>Saldo awal</h2><div class="box"><label>Saldo awal (Rp)</label><input type="number" inputmode="numeric" value="'+(S.sa||'')+'" placeholder="0" onchange="S.sa=+this.value||0;saveS();draw()"><div class="mu">Saldo sebelum transaksi pertama yang tercatat. Dipakai untuk menghitung saldo dan rekening koran.</div></div><h2>Kategori</h2><div class="box">'+S.cats.map(function(c,i){return '<div class="row sp tx" style="cursor:default"><span>'+c.i+' '+esc(c.n)+'</span><button class="btn d" style="width:auto;padding:4px 8px" onclick="delCat('+i+')">Hapus</button></div>'}).join('')+'<div class="row" style="margin-top:12px"><input id="ci" style="width:64px;margin:0" placeholder="🙂" maxlength="4"><input id="cn" style="margin:0" placeholder="Nama kategori"><button class="btn" style="width:auto" onclick="addCat()">Tambah</button></div></div><h2>Cadangan data</h2><div class="box"><div class="mu" style="margin-bottom:8px">Salin teks ini untuk menyimpan data. Tempel teks cadangan lalu tekan Pulihkan untuk memuat ulang. Perhatian: ini menimpa seluruh data di perangkat ini.</div><textarea id="bk" rows="5">'+esc(JSON.stringify(S))+'</textarea><button class="btn g" onclick="restore()">Pulihkan dari teks</button></div><h2>Tampilan</h2><div class="box"><button class="btn g" onclick="theme()">Ganti tema terang/gelap</button></div><div class="box"><button class="btn d" onclick="wipe(this)">Hapus semua data</button></div>'}
 function addCat(){var n=document.getElementById('cn').value.trim();if(!n)return;S.cats.push({n:n,i:document.getElementById('ci').value.trim()||'📦'});saveS();draw()}
 function delCat(i){S.cats.splice(i,1);saveS();draw()}
-function restore(){if(!confirm('Pulihkan akan menimpa seluruh data akun Anda. Lanjutkan?'))return;try{var o=JSON.parse(document.getElementById('bk').value);if(o&&o.tx&&o.cats){S=o;save();syncAll();draw()}}catch(e){alert('Teks cadangan tidak valid.')}}
+function restore(){if(!confirm('Pulihkan akan menimpa seluruh data di perangkat ini. Lanjutkan?'))return;try{var o=JSON.parse(document.getElementById('bk').value);if(o&&o.tx&&o.cats){S=o;save();syncAll();draw()}}catch(e){alert('Teks cadangan tidak valid.')}}
 function wipe(b){if(!rs){rs=1;b.textContent='Tekan lagi untuk menghapus semua';return}S.tx.forEach(function(t){dropTx(t.id)});S=def();save();pushSet();rs=0;draw()}
 function theme(){var r=document.documentElement,d=r.getAttribute('data-theme')==='dark'||(!r.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme:dark)').matches);r.setAttribute('data-theme',d?'light':'dark')}
 function openForm(id){ed=id?S.tx.filter(function(t){return t.id===id})[0]:null;var t=ed||{a:'',c:S.cats[0]?S.cats[0].n:'',d:iso(new Date()),m:'Tunai',n:''};
@@ -189,8 +187,7 @@ function typing(){var a=document.activeElement;return a&&a.tagName==='INPUT'&&do
 var PR={name:'',email:null,av:''},LKE='',LKF=0,LKU=0,HID=0;
 function getPin(){try{return localStorage.getItem('kantong-pin-'+(UID||'local'))}catch(e){return null}}
 function akun(){var h=getPin();
-return '<h2 style="margin-top:0">Akun</h2><div class="box"><div class="row">'+(PR.av?'<img class="av" src="'+esc(PR.av)+'" alt="" onerror="this.style.display=\'none\'">':'')+'<div class="f1"><b>'+esc(PR.name||'Pengguna')+'</b><span class="mu">'+esc(PR.email||(UID?'Email tidak ditampilkan':'Belum masuk'))+'</span></div></div>'
-+'<div class="mu" style="margin:10px 0">Data Anda tersimpan di folder aplikasi tersembunyi di Google Drive Anda dan bisa dibuka dari perangkat mana pun setelah masuk dengan akun Google yang sama.</div><button class="btn g" onclick="gReauth()" style="margin-bottom:8px">Sambungkan ulang ke Google</button><button class="btn g" onclick="authOut()">Keluar</button><div class="mu" style="margin-top:10px;text-align:center"><a href="privacy.html" target="_blank" rel="noopener" style="color:var(--pr)">Kebijakan Privasi</a></div></div>'
+return '<h2 style="margin-top:0">Profil</h2><div class="box"><label>Nama panggilan</label><input id="nm" value="'+esc(PR.name)+'" placeholder="Nama Anda"><button class="btn" onclick="simpanNama()">Simpan nama</button><div class="mu" style="margin-top:10px">Catatan hanya tersimpan di perangkat dan browser ini, tidak dikirim ke server mana pun. Setiap orang yang memakai aplikasi di perangkatnya sendiri otomatis punya catatan yang terpisah. Untuk memindahkan data ke perangkat lain, gunakan Cadangan data di bawah.</div><div class="mu" style="margin-top:10px;text-align:center"><a href="privacy.html" target="_blank" rel="noopener" style="color:var(--pr)">Kebijakan Privasi</a></div></div>'
 +pasangBox()+'<h2>Kunci PIN</h2><div class="box"><div class="mu" style="margin-bottom:8px">Minta PIN setiap aplikasi dibuka atau ditinggalkan lebih dari 30 detik. PIN hanya tersimpan di perangkat ini. Jika lupa, hapus data situs ini di pengaturan browser.</div>'
 +(h?'<label>PIN saat ini</label><input id="pn0" type="password" inputmode="numeric" maxlength="6" placeholder="••••"><button class="btn g" onclick="offPin()">Matikan PIN</button>'
 :'<label>PIN baru (4–6 angka)</label><input id="pn1" type="password" inputmode="numeric" maxlength="6" placeholder="••••"><label>Ulangi PIN</label><input id="pn2" type="password" inputmode="numeric" maxlength="6" placeholder="••••"><button class="btn" onclick="setPin()">Aktifkan PIN</button>')
@@ -224,69 +221,10 @@ else document.getElementById('lkm').textContent='PIN salah.'}
 function lockInit(){if(getPin())showLock();else hideLock()}
 document.addEventListener('visibilitychange',function(){if(document.hidden){HID=Date.now()}else if(HID&&Date.now()-HID>30000&&getPin())showLock()});
 
-/* ====== ISI DENGAN OAUTH CLIENT ID DARI GOOGLE CLOUD ====== */
-var CLIENT_ID='ISI_CLIENT_ID.apps.googleusercontent.com';
-/* ========================================================== */
-var SCOPE='openid email profile https://www.googleapis.com/auth/drive.appdata',TK=null,TEXP=0,TC=null,TRES=null,FID=null,svT=0,dirty=0,saving=0,HK='kantong-g-hint';
-function authUI(html){document.getElementById('aui').innerHTML=html;document.getElementById('au').classList.remove('off')}
-function loginUI(m){authUI('<h2>Masuk ke Kantong</h2><div class="mu" style="margin-bottom:14px">Catatan Anda tersimpan pribadi di Google Drive Anda sendiri dan bisa dibuka dari perangkat mana pun.</div><div id="aum" class="er">'+esc(m||'')+'</div><button class="btn gb" onclick="gLogin()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>Masuk dengan Google</button><div class="mu" style="margin-top:16px;text-align:center">Dengan masuk, Anda menyetujui <a href="privacy.html" target="_blank" rel="noopener">Kebijakan Privasi</a>.</div>')}
-function gisReady(){return window.google&&google.accounts&&google.accounts.oauth2}
-function reqToken(interactive,hint){return new Promise(function(res,rej){
-if(!gisReady()){rej({code:'gis_belum_siap'});return}
-TRES={res:res,rej:rej};
-if(!TC)TC=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPE,
-callback:function(r){var t=TRES;TRES=null;if(!t)return;if(r&&r.access_token){TK=r.access_token;TEXP=Date.now()+(+r.expires_in||3600)*1000;t.res(TK)}else t.rej({code:(r&&r.error)||'ditolak'})},
-error_callback:function(e){var t=TRES;TRES=null;if(t)t.rej({code:(e&&e.type)||'error'})}});
-var o={prompt:interactive?'select_account':''};if(hint)o.hint=hint;
-TC.requestAccessToken(o)})}
-function getTok(){if(TK&&Date.now()<TEXP-60000)return Promise.resolve(TK);return reqToken(false,PR.email)}
-function api(url,opt){return getTok().then(function(t){opt=opt||{};opt.headers=Object.assign({Authorization:'Bearer '+t},opt.headers||{});return fetch(url,opt)}).then(function(r){if(!r.ok)throw{code:'http_'+r.status};return r})}
-function findFile(){if(FID)return Promise.resolve(FID);
-return api("https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&q="+encodeURIComponent("name='kantong.json'")+"&fields=files(id)").then(function(r){return r.json()}).then(function(j){FID=j.files&&j.files[0]?j.files[0].id:null;return FID})}
-function pack(){return JSON.stringify({tx:S.tx,cats:S.cats,bt:S.bt,bc:S.bc,sa:S.sa||0})}
-function cloudSave(){if(!DB)return;dirty=1;clearTimeout(svT);ST='Menyimpan…';svT=setTimeout(doSave,800)}
-function doSave(){if(saving){svT=setTimeout(doSave,500);return}
-saving=1;dirty=0;var body=pack();
-findFile().then(function(id){
-if(id)return api('https://www.googleapis.com/upload/drive/v3/files/'+id+'?uploadType=media',{method:'PATCH',headers:{'Content-Type':'application/json'},body:body});
-var bd='kantongbd',m='--'+bd+'\r\nContent-Type: application/json\r\n\r\n'+JSON.stringify({name:'kantong.json',parents:['appDataFolder']})+'\r\n--'+bd+'\r\nContent-Type: application/json\r\n\r\n'+body+'\r\n--'+bd+'--';
-return api('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id',{method:'POST',headers:{'Content-Type':'multipart/related; boundary='+bd},body:m}).then(function(r){return r.json()}).then(function(j){FID=j.id})
-}).then(function(){saving=0;ST=dirty?'Menyimpan…':'Online · tersimpan di Google Drive Anda';draw()}).catch(function(e){saving=0;dirty=1;fail(e)})}
-function cloudLoad(){return findFile().then(function(id){
-if(!id){if(S.tx.length)cloudSave();return}
-return api('https://www.googleapis.com/drive/v3/files/'+id+'?alt=media').then(function(r){return r.json()}).then(function(d){
-if(d&&d.tx){S.tx=d.tx;if(d.cats)S.cats=d.cats;S.bt=d.bt||0;S.bc=d.bc||{};S.sa=d.sa||0;save()}})})}
-function startApp(user){
-DB=true;UID=user.sub;
-PR={name:user.name||user.given_name||'',email:user.email||null,av:user.picture||''};
-var legacy=null;try{legacy=localStorage.getItem('kantong-v1')}catch(e){}
-K='kantong-v2-'+UID;
-try{S=JSON.parse(localStorage.getItem(K)||legacy)||def()}catch(e){S=def()}
-ST='Menghubungkan…';document.getElementById('au').classList.add('off');lockInit();draw();
-cloudLoad().then(function(){ST='Online · tersimpan di Google Drive Anda';draw()}).catch(function(e){ST='Tidak bisa memuat dari Google Drive ('+((e&&e.code)||'error')+'). Menampilkan data lokal.';draw()})}
-function stopApp(){try{if(UID)localStorage.removeItem(K)}catch(e){}
-clearTimeout(svT);DB=null;UID=null;FID=null;TK=null;TEXP=0;dirty=0;S=def();PR={name:'',email:null,av:''};ST='';hideLock();draw()}
-function signedIn(tok,interactive){
-return fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+tok}}).then(function(r){if(!r.ok)throw{code:'userinfo_'+r.status};return r.json()}).then(function(u){
-try{localStorage.setItem(HK,u.email||'1')}catch(e){}
-startApp(u)})}
-function gLogin(){
-if(CLIENT_ID.indexOf('ISI_')===0){loginUI('Client ID belum diisi di dalam file.');return}
-reqToken(true).then(signedIn).catch(function(e){loginUI('Gagal masuk ('+((e&&e.code)||'error')+'). Coba lagi.')})}
-function gReauth(){reqToken(true,PR.email).then(function(){if(dirty)cloudSave();else{ST='Online · tersimpan di Google Drive Anda';draw()}}).catch(function(e){fail(e)})}
-function authOut(){if(!confirm('Keluar dari akun ini?'))return;
-try{localStorage.removeItem(HK)}catch(e){}
-if(TK&&gisReady())try{google.accounts.oauth2.revoke(TK,function(){})}catch(e){}
-stopApp();loginUI('')}
-function boot(n){
-if(CLIENT_ID.indexOf('ISI_')===0){authUI('<h2>Konfigurasi belum diisi</h2><div class="mu">Buka file ini di editor teks, lalu isi <b>CLIENT_ID</b> di bagian script dengan OAuth Client ID dari Google Cloud.</div>');return}
-if(!gisReady()){if(n>40){loginUI('Tidak bisa memuat layanan Google. Periksa koneksi lalu muat ulang.');return}setTimeout(function(){boot((n||0)+1)},250);return}
-var h=null;try{h=localStorage.getItem(HK)}catch(e){}
-if(!h){loginUI('');return}
-authUI('<h2>Memuat…</h2>');
-reqToken(false,h.indexOf('@')>0?h:null).then(signedIn).catch(function(){loginUI('')})}
-document.addEventListener('visibilitychange',function(){if(!document.hidden&&DB&&!dirty&&!saving&&!typing()){cloudLoad().then(function(){draw()}).catch(function(){})}});
-window.addEventListener('load',function(){boot(0)});
+function cloudSave(){}
+function simpanNama(){var v=document.getElementById('nm').value.trim();try{localStorage.setItem('kantong-nama',v)}catch(e){}PR.name=v;draw()}
+function startApp(){var n='';try{n=localStorage.getItem('kantong-nama')||''}catch(e){}PR.name=n;ST='Tersimpan di perangkat ini';lockInit();draw()}
+window.addEventListener('load',startApp);
 var DEF=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEF=e;if(tab==='setelan'&&!typing())draw()});
 window.addEventListener('appinstalled',function(){DEF=null;if(tab==='setelan')draw()});
