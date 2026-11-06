@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kebijakan Privasi – Kantong</title>
+<style>
+:root{--bg:#F2F5FA;--sf:#fff;--ink:#162033;--mu:#6B7690;--ln:#E1E6F0;--pr:#1D4ED8}
+@media(prefers-color-scheme:dark){:root{--bg:#0E1422;--sf:#172033;--ink:#EAF0FB;--mu:#93A0BA;--ln:#27324A;--pr:#6C93FF}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:26px;margin:0 0 4px}
+h2{font-size:18px;margin:28px 0 8px}
+p,li{margin:6px 0}
+ul{padding-left:20px}
+.mu{color:var(--mu);font-size:14px}
+a{color:var(--pr)}
+.box{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:14px 16px;margin:14px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>Kebijakan Privasi</h1>
+<p class="mu">Kantong – Catatan Pengeluaran · Terakhir diperbarui: 6 November 2026</p>
+
+<div class="box">
+<b>Ringkasnya:</b> catatan Anda disimpan di Google Drive Anda sendiri. Kami tidak punya server yang menyimpan data keuangan Anda, dan kami tidak bisa membaca catatan Anda.
+</div>
+
+<h2>1. Tentang aplikasi ini</h2>
+<p>Kantong adalah aplikasi web untuk mencatat pengeluaran dan pemasukan pribadi. Aplikasi ini dikelola oleh [NAMA PENGELOLA]. Pertanyaan tentang privasi bisa dikirim ke [EMAIL KONTAK].</p>
+
+<h2>2. Data yang kami akses dari akun Google Anda</h2>
+<p>Saat Anda masuk dengan Google, aplikasi meminta izin berikut:</p>
+<ul>
+<li><b>Nama, alamat email, dan foto profil</b> (scope <code>openid</code>, <code>email</code>, <code>profile</code>). Dipakai hanya untuk menampilkan siapa yang sedang masuk di dalam aplikasi.</li>
+<li><b>Folder data aplikasi di Google Drive</b> (scope <code>drive.appdata</code>). Dipakai untuk menyimpan satu file bernama <code>kantong.json</code> yang berisi catatan Anda. Izin ini hanya memberi akses ke folder tersembunyi milik aplikasi ini. Aplikasi <b>tidak bisa</b> melihat, membuka, atau mengubah file Drive Anda yang lain.</li>
+</ul>
+
+<h2>3. Data yang Anda masukkan</h2>
+<p>Transaksi (nominal, kategori, tanggal, metode bayar, catatan), kategori, anggaran, dan saldo awal disimpan di file <code>kantong.json</code> di folder aplikasi Drive Anda. Data ini berpindah langsung antara browser Anda dan Google. Data tersebut tidak melewati atau tersimpan di server kami.</p>
+
+<h2>4. Data yang tersimpan di perangkat Anda</h2>
+<ul>
+<li><b>Salinan lokal</b> catatan di penyimpanan browser (localStorage) supaya aplikasi cepat dibuka. Salinan ini dihapus saat Anda menekan <i>Keluar</i>.</li>
+<li><b>PIN</b>, jika Anda mengaktifkannya. Yang tersimpan hanya hasil enkripsi satu arah (hash) dari PIN, dan hanya di perangkat itu. PIN tidak dikirim ke mana pun.</li>
+<li><b>Penanda masuk</b> berupa email Anda, supaya aplikasi bisa masuk otomatis pada kunjungan berikutnya. Dihapus saat Anda menekan <i>Keluar</i>.</li>
+</ul>
+
+<h2>5. Layanan pihak ketiga</h2>
+<ul>
+<li><b>Google</b> (Sign-In dan Drive) memproses login dan penyimpanan sesuai <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Kebijakan Privasi Google</a>.</li>
+<li>Aplikasi memuat <b>Google Fonts</b> dan pustaka pembuat PDF dari <b>cdnjs</b>. Saat halaman dibuka, layanan tersebut dapat menerima alamat IP dan data teknis browser Anda, seperti pada situs web pada umumnya.</li>
+<li>Hosting situs dapat mencatat log akses teknis standar (misalnya alamat IP dan waktu kunjungan).</li>
+</ul>
+
+<h2>6. Yang tidak kami lakukan</h2>
+<ul>
+<li>Tidak menjual atau membagikan data Anda kepada pihak lain.</li>
+<li>Tidak memasang iklan atau pelacak analitik.</li>
+<li>Tidak memakai data Anda untuk melatih model atau tujuan lain di luar fungsi aplikasi.</li>
+</ul>
+
+<h2>7. Mengontrol dan menghapus data Anda</h2>
+<ul>
+<li><b>Hapus semua data:</b> gunakan tombol <i>Hapus semua data</i> di Setelan aplikasi, atau hapus data aplikasi Kantong lewat <a href="https://drive.google.com/drive/settings" target="_blank" rel="noopener">pengaturan Google Drive</a> (menu Kelola aplikasi).</li>
+<li><b>Cabut akses:</b> buka <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">myaccount.google.com/permissions</a>, pilih Kantong, lalu hapus akses.</li>
+<li><b>Cadangan:</b> Anda bisa menyalin seluruh data kapan saja lewat <i>Cadangan data</i> di Setelan.</li>
+</ul>
+
+<h2>8. Keamanan</h2>
+<p>Koneksi ke Google memakai HTTPS. Keamanan data Anda juga bergantung pada keamanan akun Google dan perangkat Anda. Aktifkan verifikasi dua langkah di akun Google, dan gunakan kunci PIN bila perangkat dipakai bergantian.</p>
+
+<h2>9. Anak-anak</h2>
+<p>Aplikasi ini tidak ditujukan bagi anak di bawah usia yang diizinkan untuk memiliki akun Google di wilayahnya tanpa pendampingan orang tua.</p>
+
+<h2>10. Perubahan kebijakan</h2>
+<p>Jika kebijakan ini berubah, versi terbaru akan ditampilkan di halaman ini dengan tanggal pembaruan yang baru.</p>
+
+<h2>11. Kontak</h2>
+<p>[NAMA PENGELOLA] · [EMAIL KONTAK]</p>
+</main>
+</body>
+</html>
